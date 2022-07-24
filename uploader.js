@@ -13,7 +13,7 @@
 
 window[new Error().stack.match(location.href.match(/(.*)\//g)+"(.*?):")[1]]=()=>{
 
-  var when=function(condition,callback,loadingMessage,finishedMessage){
+  function when(condition,callback,loadingMessage,finishedMessage){
     (function(){
       if(condition()){
         finishedMessage&&console.warn(finishedMessage);
@@ -23,7 +23,7 @@ window[new Error().stack.match(location.href.match(/(.*)\//g)+"(.*?):")[1]]=()=>
         requestAnimationFrame(arguments.callee);
       }
     })();  
-  };
+  }
 
   window.__upload=function(isMultiple,callback){
     // first arg specifies whether to choose multiple files or only 1
