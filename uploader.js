@@ -31,7 +31,7 @@ window[new Error().stack.match(location.href.match(/(.*)\//g)+"(.*?):")[1]]=()=>
     var input=document.createElement("input");
     input.type="file";
     if(isMultiple){
-      input.multiple=true
+      input.multiple=true;
     }
     input.style.position="fixed";
     input.onclick=()=>{
