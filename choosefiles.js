@@ -20,7 +20,7 @@ window[new Error().stack.match(location.href.match(/(.*)\//g)+"(.*?):")[1]]=()=>
   var when=function(condition,callback,loadingMessage,finishedMessage){
     (function(){
       if(condition()){
-        finishedMessage&&console.info(finishedMessage);
+        finishedMessage&&console.warn(finishedMessage);
         callback();
       }else{
         loadingMessage&&console.log(loadingMessage);
