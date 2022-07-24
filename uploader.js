@@ -2,15 +2,11 @@
 
   use like so: window["local/path/to/choosefiles.js"]();
   
-  attaches two functions to the window:
-  use __chooseFile for a single file
-  __chooseFile((file)=>{
-    //... handle the uploaded file
-  });
-  or __chooseFiles for multiple files
-  __chooseFiles((files)=>{
-    //... handle the uploaded files
-  });
+  __upload(isMultiple,callback);
+  
+  isMultiple enables whether to check multiple files or just one.
+  if set to false, 1 file will be passed into the callback function.
+  if set to true, an array of file(s) will be passed into the callback function.
   
 */
 
@@ -29,42 +25,36 @@ window[new Error().stack.match(location.href.match(/(.*)\//g)+"(.*?):")[1]]=()=>
     })();  
   };
 
-  window.__chooseFile=function(callback){
+  window.__upload=function(isMultiple,callback){
+    // first arg specifies whether to choose multiple files or only 1
     // may need user interaction (such as click or keypress) to work
     var input=document.createElement("input");
     input.type="file";
+    if(isMultiple){
+      input.multiple=true
+    }
     input.style.position="fixed";
     input.onclick=()=>{
       input.remove();
       when(()=>input.files.length>0,()=>{
-        callback(input.files[0]);
-        input=null;
-      });
-    };
-    document.documentElement.appendChild(input);
-    input.click();
-  };
-  
-  
-  window.__chooseFiles=function(callback){
-    // may need user interaction (such as click or keypress) to work
-    var input=document.createElement("input");
-    input.type="file";
-    input.multiple="true";
-    input.style.position="fixed";
-    input.onclick=()=>{
-      input.remove();
-      when(()=>input.files.length>0,()=>{
-        var filesArray=[];
-        for(let i=0;i<input.files.length;i++){
-          filesArray.push(input.files[i]);
+        if(isMultiple){
+          // return an array of files
+          var filesArray=[];
+          for(let i=0;i<input.files.length;i++){
+            filesArray.push(input.files[i]);
+          }
+          callback(filesArray);
+          input=null;
+        }else{
+          // handle 1 file
+          callback(input.files[0]);
+          input=null;
         }
-        callback(filesArray);
-        input=null;
       });
     };
     document.documentElement.appendChild(input);
     input.click();
   };
+  
   
 };
